@@ -23,14 +23,35 @@ export const getProductById = async (req, res) => {
   }
 }
 
-export const createProduct = (req, res) => {
-
+export const createProduct = async (req, res) => {
+  const {name, price} = req.body
+  try{
+    const response = await prisma.product.create({
+      data: {
+        name: name, 
+        price: price,
+      }
+    })
+    res.status(200).json(response)
+  }catch(error){
+    res.status(500).json({msg: error.message})
+  }
 }
 
 export const updateProduct = (req, res) => {
 
 }
 
-export const deleteProduct = (req, res) => {
+export const deleteProduct = async (req, res) => {
+  const id = req.params.id
+  try{
+    const response = await prisma.product.delete({
+      where: {
+        id: id
+      }
+    })
+  }catch(error){
+    res.status(500).json({msg: error.message})
+  }
   
 }
